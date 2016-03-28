@@ -1,0 +1,22 @@
+{
+  "name": "binpack-2d",
+  "version": "1.0.0",
+  "description": "Simple functional-style 2d bin packing library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/karevn/binpack-2d.git"
+  },
+  "keywords": [
+    "2d",
+    "binpack",
+    "bin-pack",
+    "js",
+    "es6"
+  ],
+  "author": "Nikolay Karev <karev.n@gmail.com> (http://yaux.karevn.com)",
+  "license": "MIT"
+}
