@@ -1,4 +1,4 @@
-const Rect = require('./rect');
+import * as Rect from './rect'
 
 // functions for sorting rects in order
 const sorters = {

@@ -1,9 +1,9 @@
-const assert = require('assert')
-const chai = require('chai')
+import assert from 'assert'
+import chai from 'chai'
 const expect = chai.expect
 chai.use(require('chai-shallow-deep-equal'));
 
-const pack = require('../src/pack').default
+import pack from '../src/pack'
 
 describe('pack', function () {
   it('should pack simple rects', function() {
