@@ -47,7 +47,7 @@ export default function pack(size, items, options) {
     return Math.max(width, item.x + item.width);
   }, 0);
   const maxHeight = packed.reduce((height, item)=> {
-    return Math.max(height, item.top + item.height)
+    return Math.max(height, item.y + item.height)
   }, 0);
   if (options.align == 'center')
     packed.forEach((item)=> {

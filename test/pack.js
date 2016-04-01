@@ -19,7 +19,8 @@ describe('pack', function () {
       {width: 1, height: 1},
       {width: 2, height: 1},
     ]
-    expect(pack(space, items, {align: 'left', gap: 1}).items).to.shallowDeepEqual([
+    const packed = pack(space, items, {align: 'left', gap: 1})
+    expect(packed.items).to.shallowDeepEqual([
       {x: 0, y: 0, width: 1, height: 1},
       {x: 2, y: 0, width: 1, height: 2},
       {x: 4, y: 0, width: 1, height: 2},
@@ -27,5 +28,6 @@ describe('pack', function () {
       {x: 2, y: 2, width: 1, height: 1},
       {x: 0, y: 4, width: 2, height: 1}
     ])
+    expect(packed.height).to.equal(5)
   })
 })
