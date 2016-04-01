@@ -9,18 +9,11 @@ const sorters = {
 };
 
 
-function find(array, predicate) {
-  for (let i = 0; i < array.length; i++) {
-    if (predicate(array[i])) {
-      return i;
-    }
-  }
-}
-
 export default function pack(size, items, options) {
   let defaults = {
     align: 'center',
-    inPlace: false
+    inPlace: false,
+    gap: 0
   }
   Object.assign(defaults, options)
   options = defaults
@@ -32,22 +25,21 @@ export default function pack(size, items, options) {
   }];
   const packed = items.map((item) => {
     const positioned = {
-      x: item.x || 0,
-      y: item.y || 0,
       width: item.width || 0,
       height: item.height || 0,
     };
-    const spaceIndex = find(spaces, (space) => {
+    const containingSpaces = spaces.filter((space) => {
       return Rect.fits(space, positioned);
     });
-    const space = spaces[spaceIndex];
-    if (space) {
-      positioned.x = space.x;
-      positioned.y = space.y;
-      spaces.splice(spaces.indexOf(space), 1);
-      spaces.push.apply(spaces, Rect.subtract(space, positioned));
-      Rect.merge(spaces);
-      spaces.sort(sorters.downwardLeftToRight);
+    if (containingSpaces.length > 0) {
+      positioned.x = containingSpaces[0].x;
+      positioned.y = containingSpaces[0].y;
+      containingSpaces.forEach((space)=> {
+        spaces.splice(spaces.indexOf(space), 1);
+        spaces.push.apply(spaces, Rect.subtract(space, positioned, options.gap));
+        Rect.merge(spaces);
+        spaces.sort(sorters.downwardLeftToRight);
+      })
     }
     return positioned;
   });

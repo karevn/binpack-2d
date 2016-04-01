@@ -44,7 +44,7 @@ export function overlaps(a, b) {
     aBottom > b.y;
 }
 
-export function subtract(a, b) {
+export function subtract(a, b, gap) {
   const free = [];
 
   const aRight = a.x + a.width;
@@ -52,22 +52,26 @@ export function subtract(a, b) {
   const bRight = b.x + b.width;
   const bBottom = b.y + b.height;
 
+  if (gap === undefined) {
+    gap = 0;
+  }
+
   // top
   if (a.y < b.y) {
     free.push({
       x: a.x,
       y: a.y,
       width: a.width,
-      height: b.y - a.y,
+      height: b.y - a.y - gap,
     });
   }
 
   // right
   if (aRight > bRight) {
     free.push({
-      x: bRight,
+      x: bRight + gap,
       y: a.y,
-      width: aRight - bRight,
+      width: aRight - bRight - gap,
       height: a.height,
     });
   }
@@ -76,9 +80,9 @@ export function subtract(a, b) {
   if (aBottom > bBottom) {
     free.push({
       x: a.x,
-      y: bBottom,
+      y: bBottom + gap,
       width: a.width,
-      height: aBottom - bBottom,
+      height: aBottom - bBottom - gap,
     });
   }
 
@@ -87,7 +91,7 @@ export function subtract(a, b) {
     free.push({
       x: a.x,
       y: a.y,
-      width: b.x - a.x,
+      width: b.x - a.x - gap,
       height: a.height,
     });
   }
