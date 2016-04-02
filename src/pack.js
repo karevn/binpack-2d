@@ -2,70 +2,74 @@ import * as Rect from './rect'
 
 // functions for sorting rects in order
 const sorters = {
-  // top down, then left to right
-  downwardLeftToRight: (a, b) => { return a.y - b.y || a.x - b.x; },
-  // left to right, then top down
-  rightwardTopToBottom: (a, b) => { return a.x - b.x || a.y - b.y; },
-};
-
-
-export default function pack(size, items, options) {
-  let defaults = {
-    align: 'center',
-    inPlace: false,
-    gap: 0
-  }
-  Object.assign(defaults, options)
-  options = defaults
-  const spaces = [{
-    x: 0,
-    y: 0,
-    width: size.width || Infinity,
-    height: size.height || Infinity,
-  }];
-  const packed = items.map((item) => {
-    const positioned = {
-      width: item.width || 0,
-      height: item.height || 0,
-    };
-    const containingSpaces = spaces.filter((space) => {
-      return Rect.fits(space, positioned);
-    });
-    if (containingSpaces.length > 0) {
-      positioned.x = containingSpaces[0].x;
-      positioned.y = containingSpaces[0].y;
-      containingSpaces.forEach((space)=> {
-        spaces.splice(spaces.indexOf(space), 1);
-        spaces.push.apply(spaces, Rect.subtract(space, positioned, options.gap));
-        Rect.merge(spaces);
-        spaces.sort(sorters.downwardLeftToRight);
-      })
+    // top down, then left to right
+    downwardLeftToRight: (a, b) => {
+        return a.y - b.y || a.x - b.x
+    },
+    // left to right, then top down
+    rightwardTopToBottom: (a, b) => {
+        return a.x - b.x || a.y - b.y
     }
-    return positioned;
-  });
-  const maxWidth = packed.reduce((width, item)=> {
-    return Math.max(width, item.x + item.width);
-  }, 0);
-  const maxHeight = packed.reduce((height, item)=> {
-    return Math.max(height, item.y + item.height)
-  }, 0);
-  if (options.align == 'center')
-    packed.forEach((item)=> {
-      item.x += (size.width - maxWidth) / 2;
+}
+
+function getMax(items, coord, dimension) {
+    return items.reduce((value, item) => {
+        if (item[coord] === undefined) {
+            return value
+        }
+        return Math.max(value, item[coord] + item[dimension])
+    }, 0)
+}
+
+export default function pack(size, items, gap) {
+    if (gap === undefined) {
+        gap = 0
+    }
+    const spaces = [{
+        x: 0,
+        y: 0,
+        width: size.width || Infinity,
+        height: size.height || Infinity
+    }]
+    return items.map((item) => {
+        const positioned = {
+            width: item.width || 0,
+            height: item.height || 0
+        }
+        const containingSpaces = spaces.filter((space) => {
+            return Rect.fits(space, positioned)
+        })
+        if (containingSpaces.length > 0) {
+            positioned.x = containingSpaces[0].x
+            positioned.y = containingSpaces[0].y
+            containingSpaces.forEach((space) => {
+                spaces.splice(spaces.indexOf(space), 1)
+                spaces.push.apply(spaces, Rect.subtract(space, positioned, gap))
+                Rect.merge(spaces)
+                spaces.sort(sorters.downwardLeftToRight)
+            })
+        }
+        return positioned
     })
-  else if (options.align == 'right') {
-    packed.forEach((item)=> {
-      item.x += size.width - maxWidth;
-    })
-  }
-  if (options.inPlace) {
-    items.forEach((item, index)=> {
-      Object.assign(item, packed[index]);
-    });
-  }
-  return {
-    width: maxWidth,
-    height: maxHeight,
-    items: options.inPlace ? undefined : packed,
-  };
+}
+
+export function getWidth(items) {
+    return getMax(items, 'x', 'width')
+}
+
+export function getHeight(items) {
+    return getMax(items, 'y', 'height')
+}
+
+export function align(size, items, align) {
+    const width = getWidth(items)
+    if (align == 'center')
+        items.forEach((item) => {
+            item.x += (size.width - width) / 2
+        })
+    else if (align == 'right') {
+        items.forEach((item) => {
+            item.x += size.width - width
+        })
+    }
 }
