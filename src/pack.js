@@ -31,23 +31,27 @@ export default function pack(size, items, gap) {
         width: size.width || Infinity,
         height: size.height || Infinity
     }]
+
     return items.map((item) => {
         const positioned = {
             width: item.width || 0,
             height: item.height || 0
         }
-        const containingSpaces = spaces.filter((space) => {
+        const space = spaces.find((space) => {
             return Rect.fits(space, positioned)
         })
-        if (containingSpaces.length > 0) {
-            positioned.x = containingSpaces[0].x
-            positioned.y = containingSpaces[0].y
-            containingSpaces.forEach((space) => {
+        if (space) {
+            positioned.x = space.x
+            positioned.y = space.y
+            const overlapping = spaces.filter((space)=> {
+                return Rect.overlaps(positioned, space)
+            })
+            overlapping.forEach((space)=> {
                 spaces.splice(spaces.indexOf(space), 1)
                 spaces.push.apply(spaces, Rect.subtract(space, positioned, gap))
-                Rect.merge(spaces)
-                spaces.sort(sorters.downwardLeftToRight)
             })
+            Rect.merge(spaces)
+            spaces.sort(sorters.downwardLeftToRight)
         }
         return positioned
     })

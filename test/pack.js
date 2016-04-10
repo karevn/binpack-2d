@@ -101,10 +101,29 @@ describe('pack', function() {
             width: 1,
             height: 1
         } ]
-        const packed = pack(space, items, {
-            align: 'left'
-        })
+        const packed = pack(space, items)
         expect(packed[1].x).to.be.undefined
         expect(packed[1].y).to.be.undefined
     })
+
+    it('should not put rects over each other', function () {
+        const space = {
+            width: 10,
+            height: Infinity
+        }
+        const items = [
+            {width: 1, height: 12},
+            {width: 8, height: 4},
+            {width: 4, height: 3},
+            {width: 1, height: 12}
+        ]
+        const packed = pack(space, items)
+        expect([
+            { width: 1, height: 12, x: 0, y: 0 },
+            { width: 8, height: 4, x: 1, y: 0 },
+            { width: 4, height: 3, x: 1, y: 4 },
+            { width: 1, height: 12, x: 9, y: 0 } ])
+        .to.shallowDeepEqual(packed)
+    })
+
 })
