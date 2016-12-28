@@ -88,6 +88,31 @@ describe('pack', function() {
         expect(getWidth(packed)).to.equal(3)
         expect(getHeight(packed)).to.equal(2)
     })
+    it('should not fail on full rows', function() {
+        const space = {
+            width: 1100,
+            height: 220
+        }
+        const items = [{
+            width: 220,
+            height: 220
+        }, {
+            width: 220,
+            height: 220
+        }, {
+            width: 220,
+            height: 220
+        } ,{
+            width: 220,
+            height: 220
+        } ,{
+            width: 220,
+            height: 220
+        } ]
+        const packed = pack(space, items)
+        expect(getWidth(packed)).to.equal(1100)
+        expect(getHeight(packed)).to.equal(220)
+    })
 
     it('should not lay out items those do not fit', function() {
         const space = {
