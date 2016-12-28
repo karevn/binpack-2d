@@ -13,15 +13,15 @@ npm install binpack-2d
 # Usage
 
 ```js
-var pack = require('binpack-2d')
-var objects = [
+import binpack from 'binpack-2d'
+const objects = [
   {width: 10, height: 10},
   {width: 20, height: 10},
   {width: 10, height: 20},
 ]
-var container = {width: 30, height: Infinity}
-var options = {... options }
-var result = pack(container, objects, options)
+const container = {width: 30, height: Infinity}
+const options = {... options }
+const result = binpack(container, objects, options)
 ```
 
 ## Options available
