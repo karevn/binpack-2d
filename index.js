@@ -1,2 +1,1 @@
-import pack from './src/pack'
-export default pack
+module.exports = require('./src/pack')

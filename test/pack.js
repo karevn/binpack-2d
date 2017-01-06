@@ -1,13 +1,10 @@
 /* global it, describe */
-import chai from 'chai'
+const chai = require('chai')
 const expect = chai.expect
 chai.use(require('chai-shallow-deep-equal'))
 
-import pack from '../src/pack'
-import {
-    getWidth,
-    getHeight
-} from '../src/pack'
+const pack = require('../src/pack')
+const {getWidth, getHeight} = pack
 
 describe('pack', function() {
     it('should pack simple rects', function() {

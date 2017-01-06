@@ -1,4 +1,4 @@
-import * as Rect from './rect'
+const Rect = require('./rect')
 
 // functions for sorting rects in order
 const sorters = {
@@ -21,7 +21,7 @@ function getMax(items, coord, dimension) {
     }, 0)
 }
 
-export default function pack(size, items, gap) {
+function pack(size, items, gap) {
     if (gap === undefined) {
         gap = 0
     }
@@ -57,15 +57,15 @@ export default function pack(size, items, gap) {
     })
 }
 
-export function getWidth(items) {
+function getWidth(items) {
     return getMax(items, 'x', 'width')
 }
 
-export function getHeight(items) {
+function getHeight(items) {
     return getMax(items, 'y', 'height')
 }
 
-export function align(size, items, align) {
+function align(size, items, align) {
     const width = getWidth(items)
     if (align == 'center')
         items.forEach((item) => {
@@ -77,3 +77,6 @@ export function align(size, items, align) {
         })
     }
 }
+
+module.exports = pack
+Object.assign(module.exports, {getWidth, getHeight, align})
