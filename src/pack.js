@@ -1,4 +1,6 @@
 const Rect = require('./rect')
+const find = require('lodash/find')
+const filter = require('lodash/filter')
 
 // functions for sorting rects in order
 const sorters = {
@@ -37,13 +39,13 @@ function pack(size, items, gap) {
             width: item.width || 0,
             height: item.height || 0
         }
-        const space = spaces.find((space) => {
+        const space = find(spaces, (space) => {
             return Rect.fits(space, positioned)
         })
         if (space) {
             positioned.x = space.x
             positioned.y = space.y
-            const overlapping = spaces.filter((space)=> {
+            const overlapping = filter(spaces, (space)=> {
                 return Rect.overlaps(positioned, space)
             })
             overlapping.forEach((space)=> {
