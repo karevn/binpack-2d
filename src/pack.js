@@ -1,6 +1,6 @@
 const Rect = require('./rect')
-const find = require('lodash/find')
-const filter = require('lodash/filter')
+const find = require('array.prototype.find')
+const filter = require('array.prototype.filter')
 
 // functions for sorting rects in order
 const sorters = {

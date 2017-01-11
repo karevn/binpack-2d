@@ -1,6 +1,6 @@
 {
   "name": "binpack-2d",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Simple functional-style 2d bin packing library",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "mocha": "^3.2.0"
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "array.prototype.filter": "^0.1.1",
+    "array.prototype.find": "^2.0.1"
   }
 }
