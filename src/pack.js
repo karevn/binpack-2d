@@ -44,7 +44,7 @@ function pack(size, items, gap) {
         if (space) {
             positioned.x = space.x
             positioned.y = space.y
-            const overlapping = filter(spaces, (space)=> {
+            const overlapping = spaces.filter((space)=> {
                 return Rect.overlaps(positioned, space)
             })
             overlapping.forEach((space)=> {
