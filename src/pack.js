@@ -1,6 +1,5 @@
 const Rect = require('./rect')
 const find = require('array.prototype.find')
-const filter = require('array.prototype.filter')
 
 // functions for sorting rects in order
 const sorters = {
