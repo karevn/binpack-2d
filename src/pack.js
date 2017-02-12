@@ -87,4 +87,4 @@ function align(size, items, align) {
 }
 
 module.exports = pack
-Object.assign(module.exports, {getWidth, getHeight, align})
+Object.assign(module.exports, {getWidth, getHeight, align, sorters})
