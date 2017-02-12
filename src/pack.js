@@ -10,7 +10,14 @@ const sorters = {
     // left to right, then top down
     rightwardTopToBottom: (a, b) => {
         return a.x - b.x || a.y - b.y
+    },
+    leftwardTopToBottom: (a, b) => {
+        return b.x - a.x || a.y - b.y
+    },
+    downwardRightToLeft: (a, b) => {
+        return a.y - b.y || b.x - a.x
     }
+
 }
 
 function getMax(items, coord, dimension) {
