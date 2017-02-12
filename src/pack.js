@@ -1,24 +1,6 @@
 const Rect = require('./rect')
 const find = require('array.prototype.find')
 
-// functions for sorting rects in order
-const sorters = {
-    // top down, then left to right
-    downwardLeftToRight: (a, b) => {
-        return a.y - b.y || a.x - b.x
-    },
-    // left to right, then top down
-    rightwardTopToBottom: (a, b) => {
-        return a.x - b.x || a.y - b.y
-    },
-    leftwardTopToBottom: (a, b) => {
-        return b.x - a.x || a.y - b.y
-    },
-    downwardRightToLeft: (a, b) => {
-        return a.y - b.y || b.x - a.x
-    }
-
-}
 
 function getMax(items, coord, dimension) {
     return items.reduce((value, item) => {
@@ -29,7 +11,25 @@ function getMax(items, coord, dimension) {
     }, 0)
 }
 
-function pack(size, items, gap) {
+function getStrategy(rtl) {
+    return rtl
+        ?   {
+            sorter: (a, b) => a.y - b.y || a.x - b.x,
+            place: (positioned, space) => {
+                positioned.x = space.x + space.width - positioned.width,
+                positioned.y = space.y
+            }
+        }
+        :   {
+            sorter: (a, b) => a.y - b.y || a.x - b.x,
+            place: (positioned, space) => {
+                positioned.x = space.x,
+                positioned.y = space.y
+            }
+        }
+}
+
+function pack(size, items, gap, rtl) {
     if (gap === undefined) {
         gap = 0
     }
@@ -39,7 +39,7 @@ function pack(size, items, gap) {
         width: size.width || Infinity,
         height: size.height || Infinity
     }]
-
+    const strategy = getStrategy(rtl)
     return items.map((item) => {
         const positioned = {
             width: item.width || 0,
@@ -49,8 +49,7 @@ function pack(size, items, gap) {
             return Rect.fits(space, positioned)
         })
         if (space) {
-            positioned.x = space.x
-            positioned.y = space.y
+            strategy.place(positioned, space)
             const overlapping = spaces.filter((space)=> {
                 return Rect.overlaps(positioned, space)
             })
@@ -59,7 +58,7 @@ function pack(size, items, gap) {
                 spaces.push.apply(spaces, Rect.subtract(space, positioned, gap))
             })
             Rect.merge(spaces)
-            spaces.sort(sorters.downwardLeftToRight)
+            spaces.sort(strategy.sorter)
         }
         return positioned
     })
@@ -87,4 +86,4 @@ function align(size, items, align) {
 }
 
 module.exports = pack
-Object.assign(module.exports, {getWidth, getHeight, align, sorters})
+Object.assign(module.exports, {getWidth, getHeight, align})

@@ -12,127 +12,64 @@ describe('pack', function() {
             width: 5,
             height: 5
         }
-        const items = [{
-            width: 1,
-            height: 1
-        }, {
-            width: 1,
-            height: 2
-        }, {
-            width: 1,
-            height: 2
-        }, {
-            width: 1,
-            height: 1
-        }, {
-            width: 1,
-            height: 1
-        }, {
-            width: 2,
-            height: 1
-        } ]
+        const items = [
+            {width: 1, height: 1},
+            {width: 1, height: 2},
+            {width: 1, height: 2},
+            {width: 1, height: 1},
+            {width: 1, height: 1},
+            {width: 2, height: 1}
+        ]
         const packed = pack(space, items, 1)
-        expect(packed).to.shallowDeepEqual([{
-            x: 0,
-            y: 0,
-            width: 1,
-            height: 1
-        }, {
-            x: 2,
-            y: 0,
-            width: 1,
-            height: 2
-        }, {
-            x: 4,
-            y: 0,
-            width: 1,
-            height: 2
-        }, {
-            x: 0,
-            y: 2,
-            width: 1,
-            height: 1
-        }, {
-            x: 2,
-            y: 2,
-            width: 1,
-            height: 1
-        }, {
-            x: 0,
-            y: 4,
-            width: 2,
-            height: 1
-        }])
+        expect(packed).to.shallowDeepEqual([
+            {x: 0, y: 0, width: 1, height: 1},
+            {x: 2, y: 0, width: 1, height: 2},
+            {x: 4, y: 0, width: 1, height: 2},
+            {x: 0, y: 2, width: 1, height: 1},
+            {x: 2, y: 2, width: 1, height: 1},
+            {x: 0, y: 4, width: 2, height: 1}
+        ])
         expect(getHeight(packed)).to.equal(5)
     })
 
     it('should not fail on full rows', function() {
-        const space = {
-            width: 3,
-            height: 2
-        }
-        const items = [{
-            width: 3,
-            height: 1
-        }, {
-            width: 1,
-            height: 1
-        }, {
-            width: 1,
-            height: 1
-        } ]
+        const space = {width: 3, height: 2}
+        const items = [
+            {width: 3, height: 1},
+            {width: 1, height: 1},
+            {width: 1, height: 1}
+        ]
         const packed = pack(space, items)
         expect(getWidth(packed)).to.equal(3)
         expect(getHeight(packed)).to.equal(2)
     })
     it('should not fail on full rows', function() {
-        const space = {
-            width: 1100,
-            height: 220
-        }
-        const items = [{
-            width: 220,
-            height: 220
-        }, {
-            width: 220,
-            height: 220
-        }, {
-            width: 220,
-            height: 220
-        } ,{
-            width: 220,
-            height: 220
-        } ,{
-            width: 220,
-            height: 220
-        } ]
+        const space = {width: 1100, height: 220}
+        const items = [
+            {width: 220, height: 220},
+            {width: 220, height: 220},
+            {width: 220, height: 220},
+            {width: 220, height: 220},
+            {width: 220, height: 220}
+        ]
         const packed = pack(space, items)
         expect(getWidth(packed)).to.equal(1100)
         expect(getHeight(packed)).to.equal(220)
     })
 
     it('should not lay out items those do not fit', function() {
-        const space = {
-            width: 2,
-            height: 1
-        }
-        const items = [{
-            width: 2,
-            height: 1
-        }, {
-            width: 1,
-            height: 1
-        } ]
+        const space = {width: 2, height: 1}
+        const items = [
+            {width: 2, height: 1},
+            {width: 1, height: 1}
+        ]
         const packed = pack(space, items)
         expect(packed[1].x).to.be.undefined
         expect(packed[1].y).to.be.undefined
     })
 
     it('should not put rects over each other', function () {
-        const space = {
-            width: 10,
-            height: Infinity
-        }
+        const space = {width: 10, height: Infinity}
         const items = [
             {width: 1, height: 12},
             {width: 8, height: 4},
@@ -148,4 +85,25 @@ describe('pack', function() {
         .to.shallowDeepEqual(packed)
     })
 
+    it('should pack rtl', function () {
+        const space = {width: 5, height: 5}
+        const items = [
+            {width: 1, height: 1},
+            {width: 1, height: 2},
+            {width: 1, height: 2},
+            {width: 1, height: 1},
+            {width: 1, height: 1},
+            {width: 2, height: 1}
+        ]
+        const packed = pack(space, items, 1, true)
+        expect(packed).to.shallowDeepEqual([
+            {x: 4, y: 0, width: 1, height: 1},
+            {x: 2, y: 0, width: 1, height: 2},
+            {x: 0, y: 0, width: 1, height: 2},
+            {x: 4, y: 2, width: 1, height: 1},
+            {x: 2, y: 2, width: 1, height: 1},
+            {x: 3, y: 4, width: 2, height: 1}
+        ])
+        expect(getHeight(packed)).to.equal(5)
+    })
 })
