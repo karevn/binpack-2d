@@ -106,4 +106,18 @@ describe('pack', function() {
         ])
         expect(getHeight(packed)).to.equal(5)
     })
+
+    it('should pack two rows', function () {
+        const space = {width: 500, height: 160}
+        const items = [
+            {width: 510, height: 160},
+            {width: 260, height: 160}
+        ]
+        const packed = pack(space, items, 0)
+
+        expect(packed).to.shallowDeepEqual([
+            {x: 0, y: 0, width: 510, height: 160},
+            {x: 0, y: 160, width: 260, height: 160}
+        ])
+    })
 })
