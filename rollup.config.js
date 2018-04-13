@@ -19,7 +19,7 @@ export default {
       babelrc: false,
       exclude: 'node_modules/**',
       presets: [ [ 'env', { modules: false } ], 'stage-0' ],
-      plugins: [ 'external-helpers' ]
+      plugins: [ 'external-helpers', ]
     }),
     cjs({
       exclude: 'node_modules/process-es6/**',

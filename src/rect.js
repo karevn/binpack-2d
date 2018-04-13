@@ -1,4 +1,4 @@
-function contains(container, rect) {
+export function contains(container, rect) {
     const otherWidth = rect.width || 0
     const otherHeight = rect.height || 0
     return container.x <= rect.x &&
@@ -7,7 +7,7 @@ function contains(container, rect) {
         container.y + container.height >= rect.y + otherHeight
 }
 
-function merge(rects) {
+export function merge(rects) {
     for (let i = 0; i < rects.length; i++) {
         let rect = rects[i]
         let j = 0
@@ -31,7 +31,7 @@ function merge(rects) {
     }
 }
 
-function overlaps(a, b) {
+export function overlaps(a, b) {
     const aRight = a.x + a.width
     const aBottom = a.y + a.height
     const bRight = b.x + b.width
@@ -43,7 +43,7 @@ function overlaps(a, b) {
         aBottom > b.y
 }
 
-function subtract(a, b, gap) {
+export function subtract(a, b, gap) {
     const free = []
 
     const aRight = a.x + a.width
@@ -97,8 +97,6 @@ function subtract(a, b, gap) {
     return free
 }
 
-function fits(a, b) {
+export function fits(a, b) {
     return a.width >= b.width && a.height >= b.height
 }
-
-module.exports = {fits, merge, contains, overlaps, subtract}

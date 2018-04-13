@@ -1,6 +1,6 @@
 {
   "name": "binpack-2d",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Simple functional-style 2d bin packing library",
   "main": "lib/index.js",
   "scripts": {
@@ -34,12 +34,14 @@
     "rollup-plugin-node-globals": "^1.2.0",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-peer-deps-external": "^2.1.0",
-    "rollup-plugin-replace": "^2.0.0"
-  },
-  "dependencies": {
-    "array.prototype.find": "^2.0.1",
+    "rollup-plugin-replace": "^2.0.0",
     "babel-plugin-external-helpers": "^6.22.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "array.prototype.find": "^2.0.4"
   }
 }

@@ -1,1 +1,3 @@
-module.exports = require('./src/pack')
+import pack from './src/pack'
+
+export default pack

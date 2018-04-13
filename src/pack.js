@@ -1,4 +1,4 @@
-const Rect = require('./rect')
+import {fits, overlaps, subtract, merge } from './rect'
 const find = require('array.prototype.find')
 
 
@@ -46,33 +46,33 @@ function pack(size, items, gap, rtl) {
             height: item.height || 0
         }
         const space = find(spaces, (space) => {
-            return Rect.fits(space, positioned)
+            return fits(space, positioned)
         })
         if (space) {
             strategy.place(positioned, space)
             const overlapping = spaces.filter((space)=> {
-                return Rect.overlaps(positioned, space)
+                return overlaps(positioned, space)
             })
             overlapping.forEach((space)=> {
                 spaces.splice(spaces.indexOf(space), 1)
-                spaces.push.apply(spaces, Rect.subtract(space, positioned, gap))
+                spaces.push.apply(spaces, subtract(space, positioned, gap))
             })
-            Rect.merge(spaces)
+            merge(spaces)
             spaces.sort(strategy.sorter)
         }
         return positioned
     })
 }
 
-function getWidth(items) {
+export function getWidth(items) {
     return getMax(items, 'x', 'width')
 }
 
-function getHeight(items) {
+export function getHeight(items) {
     return getMax(items, 'y', 'height')
 }
 
-function align(size, items, align) {
+export function align(size, items, align) {
     const width = getWidth(items)
     if (align == 'center')
         items.forEach((item) => {
@@ -85,5 +85,4 @@ function align(size, items, align) {
     }
 }
 
-module.exports = pack
-Object.assign(module.exports, {getWidth, getHeight, align})
+export default pack
